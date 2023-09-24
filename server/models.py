@@ -1,9 +1,17 @@
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy_serializer import SerializerMixin
+#!/usr/bin/env python3
+from app import db
+from models import Newsletter
 
-db = SQLAlchemy()
+def seed_data():
+    with db.app.app_context():
+        db.create_all()
 
-class Plant(db.Model, SerializerMixin):
-    __tablename__ = 'plants'
+        email1 = Newsletter(email='example1@example.com')
+        email2 = Newsletter(email='example2@example.com')
 
-    id = db.Column(db.Integer, primary_key=True)
+        db.session.add(email1)
+        db.session.add(email2)
+        db.session.commit()
+
+if __name__ == '__main__':
+    seed_data()
