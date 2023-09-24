@@ -1,17 +1,15 @@
 #!/usr/bin/env python3
 from app import db
-from models import Newsletter
 
-def seed_data():
-    with db.app.app_context():
-        db.create_all()
+class Newsletter(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(120), unique=True, nullable=False)
 
-        email1 = Newsletter(email='example1@example.com')
-        email2 = Newsletter(email='example2@example.com')
+    def __init__(self, email):
+        self.email = email
 
-        db.session.add(email1)
-        db.session.add(email2)
-        db.session.commit()
-
-if __name__ == '__main__':
-    seed_data()
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'email': self.email
+        }
